@@ -1,4 +1,3 @@
-import React from 'react'
 import { Gaussian } from '../lib/mixture'
 import type { Objective } from '../lib/optimize'
 

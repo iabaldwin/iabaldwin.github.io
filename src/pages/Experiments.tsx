@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom'
 import { experiments } from '../experiments/registry'
 
-export default function Landing() {
+export default function Experiments() {
   return (
     <div className="landing">
       <header className="header">
         <div className="title">
           <img src={`${import.meta.env.BASE_URL}favicon.svg`} width={20} height={20} />
-          <span>Experiments by iabaldwin</span>
-          <span className="tag">Hub</span>
+          <span>Experiments</span>
+          <span className="tag">Index</span>
         </div>
       </header>
       <main className="content">
@@ -22,9 +22,6 @@ export default function Landing() {
               <div className="tile-meta">Interactive • Vite + React</div>
             </Link>
           ))}
-        </div>
-        <div style={{marginTop:12}}>
-          <Link to="/experiments" className="btn ghost" style={{textDecoration:'none'}}>Browse all experiments →</Link>
         </div>
       </main>
     </div>

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Plot from '../components/Plot'
 import { ComponentList, MetricsTable, ModelPanel } from '../components/Controls'
@@ -10,7 +10,7 @@ import ParamHeatmap from '../components/ParamHeatmap'
 
 export default function DivergencePage() {
   const [domain, setDomain] = useState<[number, number]>([-6, 6])
-  const [gridN, setGridN] = useState(1024)
+  const gridN = 1024
   // Model (P) and Target (Q)
   const [pComps, setPComps] = useState<Gaussian[]>(defaultMixture('unimodal'))
   const [qComps, setQComps] = useState<Gaussian[]>([
@@ -67,14 +67,6 @@ export default function DivergencePage() {
     else setQComps(defaultMixture(preset))
   }
 
-  function jitterInitFromP(p: Gaussian[], d: [number, number]): Gaussian[] {
-    const base = p[0] ?? { mean: 0, sigma: 1, weight: 1 }
-    const width = d[1] - d[0]
-    const jitter = 0.01 * width * (Math.random() * 2 - 1)
-    const sigmaJitter = base.sigma * (1 + 0.05 * (Math.random() * 2 - 1))
-    return [ { mean: base.mean + jitter, sigma: Math.max(0.1, Math.min(3, sigmaJitter)), weight: 1 } ]
-  }
-
   async function onFit() {
     setRunning(true)
     abortRef.current = false
@@ -109,7 +101,7 @@ export default function DivergencePage() {
     <div className="app">
       <header className="header">
         <div className="title">
-          <img src="/favicon.svg" width={20} height={20} />
+          <img src={`${import.meta.env.BASE_URL}favicon.svg`} width={20} height={20} />
           <span>Divergence Playground</span>
           <span className="tag">Vite + React</span>
         </div>
@@ -120,6 +112,18 @@ export default function DivergencePage() {
         </div>
       </header>
       <aside className="sidebar">
+        <ModelPanel
+          objective={objective}
+          setObjective={setObjective}
+          steps={steps}
+          setSteps={setSteps}
+          lr={lr}
+          setLr={setLr}
+          running={running}
+          onFit={onFit}
+          onStop={onStop}
+        />
+
         <div className="panel">
           <h3>Global</h3>
           <div className="row">
@@ -158,18 +162,6 @@ export default function DivergencePage() {
         </div>
 
         <MetricsTable units={units} values={metrics} />
-
-        <ModelPanel
-          objective={objective}
-          setObjective={setObjective}
-          steps={steps}
-          setSteps={setSteps}
-          lr={lr}
-          setLr={setLr}
-          running={running}
-          onFit={onFit}
-          onStop={onStop}
-        />
 
         <div className="panel">
           <h3>Presets</h3>

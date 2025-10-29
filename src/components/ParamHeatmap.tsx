@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { objectiveValue } from '../lib/optimize'
 import { densityOnGrid, Gaussian } from '../lib/mixture'
 
